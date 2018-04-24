@@ -51,6 +51,7 @@ def random_walk(maximalNoOfCities):
 			#print the new shortest path
 			shortestTourCities = [cities[i] for i in shortestTour]
 			print("iteration: {} tour: {} length: {}".format(j,shortestTourCities, shortestTourLength))
+			print(p)
 		
 			# do some status printing from time to time
 		elif j % 100000 == 0:
@@ -66,7 +67,7 @@ maximalNoOfCities=6
 print(cities[:maximalNoOfCities])
 
 # print distance matrix
-print(distances)
+print(distances[:maximalNoOfCities])
 
 # do random walk search for 1000000 steps
 random_walk(maximalNoOfCities)
