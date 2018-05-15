@@ -41,6 +41,13 @@ def kantentausch(p, k1, k2):
     pneu = array(pneu)
     return pneu
 
+def node_insert(p, node, kante):
+    pneu = p
+    temp = pneu[node]
+    pneu[kante+2:node+1] = pneu[kante+1:node]
+    pneu[kante+1] = temp
+    pneu = array(pneu)
+    return pneu
 
 
 def twoopt_random(p, maxepisodes):
@@ -79,10 +86,13 @@ maximalNoOfCities = 10
 #print(distances[:maximalNoOfCities, :maximalNoOfCities])
 
 maxepisodes = 1000000
-p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
-route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
+#p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
+#route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
 #print(route)   #ausgabe der route mit namen
-#p = array([1,2,3,4,5,6,7,8,9,10])
+p = array([1,2,3,4,5,6,7,8,9,10])
 #print(p)    #ausgabe der route mit indexn
 
-twoopt_random(p, maxepisodes)
+#twoopt_random(p, maxepisodes)
+
+test = node_insert(p, 8, 2)
+print(test)
