@@ -34,7 +34,7 @@ def measurePath(p, distances):
 def kantentausch(p, k1, k2):
     #kanten vertauschen:
     #weg zwischen den kanten umdrehen
-    pneu = p
+    pneu = np.copy(p)
     pneu[k1+1], pneu[k2] = pneu[k2], pneu[k1+1]
     pneu[k1+2:k2] = pneu[k2-1:k1+1:-1]
 
@@ -59,15 +59,15 @@ def twoopt_random(p, maxepisodes):
             tourLength = tourLengthNeu
             route = [cities[i] for i in p]
             print("iteration: {} tour: {} length: {}".format(j+1, route, tourLength))
-        elif j%100000 == 0:
-            print("Episode:", j)
+        elif (j+1)%100000 == 0:
+            print("Episode:", j+1)
     print("Best tour: {} length: {}".format(route, tourLength))
 
 
 
 
 
-maximalNoOfCities = 10
+maximalNoOfCities = 16
 
 # load the distance matrix and city names
 (cities, distances) = loadDistances()
