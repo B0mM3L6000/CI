@@ -3,6 +3,7 @@ from numpy import *
 from random import *
 import random
 import itertools
+import math
 
 
 from itertools import permutations
@@ -44,7 +45,7 @@ def kantentausch(p, k1, k2):
 def node_insert(p, node, kante):
     pneu = np.copy(p)
     temp = pneu[node]
-    print(temp)
+    #print(temp)
     if kante < node:
         pneu[kante+2:node+1] = pneu[kante+1:node]
         pneu[kante+1] = temp
@@ -83,29 +84,34 @@ def twoopt_random(p, maxepisodes):
 
 """
 
-"""
-def cool1(temperatur, t):
+#linear:
+def cool1(starttemperatur,endtemperature, t, maxepisodes):
     #abkühlen der temperatur T
+    newtemperature = starttemperatur - t*(starttemperatur-endtemperature)/maxepisodes
     return newtemperature
-"""
 
-"""
-def cool2(temperatur, t):
-    #abkühlen der temperatur T
-    return newtemperature
-"""
 
-"""
-def cool3(temperatur, t):
+
+def cool2(starttemperatur,endtemperature, t, maxepisodes):
     #abkühlen der temperatur T
+    newtemperature = starttemperatur*((endtemperature/starttemperatur)**(t/maxepisodes))
     return newtemperature
-"""
+
+
+
+def cool3(starttemperatur,endtemperature, t, maxepisodes):
+    #abkühlen der temperatur T
+    newtemperature = starttemperatur * (2.718 ** ((-1)*(1/(maxepisodes**2))*math.log(starttemperatur/endtemperature)*(t**2)))
+    return newtemperature
+
 
 
 
 def SA(p, maxepisodes,cooling):
     t = 1
     temperature = 1
+    starttemperature = 1
+    endtemperature = 0.00001
     for j in range(maxepisodes):
         randomoperator = randint(1,3)
         if randomoperator == 1:
@@ -117,37 +123,41 @@ def SA(p, maxepisodes,cooling):
             #mache node insert
             node = randint(0, len(p)-1)
             kante = choice([i for i in range(0, len(p)-1) if i not in [node, node-1]])
-            pneu = node_insert(node, kante)
+            pneu = node_insert(p, node, kante)
         elif randomoperator == 3:
             #mache node exchange
             node1 = randint(0, len(p)-3)
             node2 = randint(node1+2, len(p)-1)
-            pneu = node_exchange(node1, node2)
+            pneu = node_exchange(p, node1, node2)
 
-        epsilon = random.rand(0,1)
+        epsilon = random.uniform(0,1)
 
         fneu = measurePath(pneu, distances)
         falt = measurePath(p, distances)
 
-        if epsilon <= (e**((fneu - falt)/temperature)):
+        if epsilon <= (2.718**(((fneu - falt)/temperature)*(-1))):
             #update neue tour
+            #print("test1")
             p = pneu
             route = [cities[i] for i in p]
             print("iteration: {} tour: {} length: {}".format(j+1, route, fneu))
         elif fneu <= falt:
             #update neue tour
+            #print("lalala")
             p = pneu
             route = [cities[i] for i in p]
             print("iteration: {} tour: {} length: {}".format(j+1, route, fneu))
         elif (j+1)%100000 == 0:
             print("Episode:", j+1)
 
+        #print(temperature)
+
         if cooling == 1:
-            temperature = cool1(temperature, t)
+            temperature = cool1(starttemperature, endtemperature, t, maxepisodes)
         elif cooling == 2:
-            temperature = cool2(temperature, t)
+           temperature = cool2(starttemperature, endtemperature, t, maxepisodes)
         elif cooling == 3:
-            temperature = cool1(temperature, t)
+            temperature = cool1(starttemperature, endtemperature, t, maxepisodes)
             
         t +=1
 
@@ -164,13 +174,12 @@ maximalNoOfCities = 10
 #print(distances[:maximalNoOfCities, :maximalNoOfCities])
 
 maxepisodes = 1000000
-#p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
+p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
 #route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
 #print(route)   #ausgabe der route mit namen
-testarray = array([1,2,3,4,5,6,7,8,9,10])
+#testarray = array([1,2,3,4,5,6,7,8,9,10])
 #print(p)    #ausgabe der route mit indexn
 
 #twoopt_random(p, maxepisodes)
-test = node_insert(testarray, 2, 7)
-print(testarray)
-print(test)
+
+SA(p, maxepisodes, 3)
