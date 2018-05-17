@@ -71,7 +71,61 @@ Best tour: ['Schwerin', 'Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', '
 
 Aufgabe 3:
 
-Für 10 Städte fand meine SA Implentierung immer die beste Tour, war allerdings langsamer als mein Bruteforce, obwohl er weniger Touren inspiziert hat (1 Mil. statt 3,62 Mil).
+
+Hyperparameter:
+ - Episoden: 1 Millionen
+ - Starttemperatur: 1
+ - Endtemperatur: 0
+
+Coolingschema:
+ 
+    - Schema 1:   newtemperature = starttemperatur - t*(starttemperatur-endtemperature)/maxepisodes
+    - Schema 2:   newtemperature = starttemperatur*((endtemperature/starttemperatur)**(t/maxepisodes))
+    - Schema 3:   newtemperature = starttemperatur * (2.718 ** ((-1)*(1/(maxepisodes**2))*math.log(starttemperatur/endtemperature)*(t**2)))
+ 
+
+Für 16 Städte:
+    
+    Schema 1:
+        
+        Run 1:
+        Run 2:
+        Run 3:
+        Run 4:
+        Run 5:
+
+        Best:
+        Average:
+
+    
+    Schema 2:
+        
+        Run 1:
+        Run 2:
+        Run 3:
+        Run 4:
+        Run 5:
+
+        Best:
+        Average:
+
+    
+    Schema 3:
+        
+        Run 1:
+        Run 2:
+        Run 3:
+        Run 4:
+        Run 5:
+
+        Best:
+        Average:
+
+
+
+
+Für 10 Städte fand meine SA Implentierung immer die beste Tour, war allerdings langsamer als mein Bruteforce, obwohl er weniger Touren inspiziert hat (1 Mil. statt 3,62 Mil). 
+Für 16 Städte war SA Brutforce allerdings klar überlegen, da es in kurzer Zeit jedesmal auf die beste Lösung kam. Gegenüber 2opt war es zwar langsamer, aber dafür auch genauer.
 
 
 
