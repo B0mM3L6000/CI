@@ -1,0 +1,77 @@
+Aufgabe 1:
+
+Die kürzeste Tour ist 2275 lang und geht durch folgende Städte:
+
+['Kiel', 'Hamburg', 'Mainz', 'Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Berlin', 'Potsdam', 'Schwerin']
+
+Es dauerte 12 Sekunden diese zu berechnen mit Bruteforce und 10! Touren wurden betrachtet.
+
+Für 16 Städte müssen 16! Touren betrachtet werden und daher wird es ca um den Faktor 16!/10! länger dauern. Dies entspricht ca. 69189120 Sekunden also 800 Tage oder mehr als 2 Jahre.
+
+
+#########################################################
+
+Aufgabe 2:
+
+
+Für 10 Städte:
+
+1 Millionen Iterationen in 11 Sekunden
+
+Run 1:
+Best tour: ['Potsdam', 'Schwerin', 'Kiel', 'Hamburg', 'Mainz', 'Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Berlin'] length: 2275.0
+nach 319 Iterationen
+
+Run 2:
+Best tour: ['Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Berlin', 'Potsdam', 'Schwerin', 'Kiel', 'Hamburg', 'Mainz'] length: 2275.0
+nach 94 Iterationen
+
+Run 3:
+Best tour: ['Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Berlin', 'Potsdam', 'Schwerin', 'Kiel', 'Hamburg', 'Mainz'] length: 2275.0
+nach 128 Iterationen
+
+Run 4:
+Best tour: ['Mainz', 'Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Berlin', 'Potsdam', 'Schwerin', 'Kiel', 'Hamburg'] length: 2275.0
+nach 42 Iterationen
+
+Run 5:
+Best tour: ['Dresden', 'Berlin', 'Potsdam', 'Schwerin', 'Kiel', 'Hamburg', 'Mainz', 'Saarbruecken', 'Stuttgart', 'Muenchen'] length: 2275.0
+nach 46 Iterationen
+
+
+
+Für 16 Städte:
+
+Run 1:
+Best tour: ['Duesseldorf', 'Hannover', 'Bremen', 'Hamburg', 'Kiel', 'Schwerin', 'Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', 'Muenchen', 'Stuttgart', 'Saarbruecken', 'Mainz', 'Wiesbaden'] length: 2794.0  in 13 Sekunden und eine Millionen Iterationen (Tour gefunden nach 276 Iteration)
+
+Run 2:
+Best tour: ['Duesseldorf', 'Hannover', 'Bremen', 'Hamburg', 'Kiel', 'Schwerin', 'Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', 'Muenchen', 'Stuttgart', 'Saarbruecken', 'Mainz', 'Wiesbaden'] length: 2794.0 in 13 Sekunden und eine Millionen Iteration (Tour gefunden nach 353 Iteration)
+
+Run 3:
+Best tour: ['Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', 'Muenchen', 'Stuttgart', 'Saarbruecken', 'Mainz', 'Wiesbaden', 'Duesseldorf', 'Hannover', 'Bremen', 'Hamburg', 'Kiel', 'Schwerin'] length: 2794.0 in 13 Sekunden und eine Millionen Iteration (Tour gefunden nach 582 Iteration)
+
+Run 4:
+Best tour: ['Saarbruecken', 'Stuttgart', 'Muenchen', 'Dresden', 'Erfurt', 'Hannover', 'Magdeburg', 'Potsdam', 'Berlin', 'Schwerin', 'Kiel', 'Hamburg', 'Bremen', 'Duesseldorf', 'Wiesbaden', 'Mainz'] length: 2926.0 in 13 Sekunden und eine Millionen Iteration (Tour gefunden nach 433 Iterationen)
+
+Run 5: 
+Best tour: ['Schwerin', 'Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', 'Muenchen', 'Stuttgart', 'Saarbruecken', 'Mainz', 'Wiesbaden', 'Duesseldorf', 'Hannover', 'Bremen', 'Hamburg', 'Kiel'] length: 2794.0 in 13 Sekunden und eine Millionen Iterationen (Tour gefunden nach 955 Iterationen)
+
+
+
+
+
+=> Für 10 Städte fand 2opt immer die beste Lösung und auch erheblich schneller als Bruteforce
+
+=> Für 16 Städte fand 2opt 4mal eine Länge von 2794 und einmal 2926 (im Mittel also 2820,4)  und zwar fast so schnell wie Bruteforce für 10 Städte brauchte. 
+
+
+
+#################################################################
+
+Aufgabe 3:
+
+Für 10 Städte fand meine SA Implentierung immer die beste Tour, war allerdings langsamer als mein Bruteforce, obwohl er weniger Touren inspiziert hat (1 Mil. statt 3,62 Mil).
+
+
+

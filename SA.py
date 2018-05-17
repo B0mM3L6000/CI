@@ -4,6 +4,7 @@ from random import *
 import random
 import itertools
 import math
+import time
 
 
 from itertools import permutations
@@ -60,29 +61,7 @@ def node_exchange(p, node1, node2):
     pneu[node1], pneu[node2] = pneu[node2], pneu[node1]
     return pneu
 
-"""
 
-def twoopt_random(p, maxepisodes):
-    #auswaehlen von 2 kanten (dargestellt jeweils durch den index des ersten knoten der kante)
-    j = 0
-    tourLength = measurePath(p, distances)
-    route = [cities[i] for i in p]
-    print("iteration: {} tour: {} length: {}".format(j, route, tourLength))
-    for j in range(maxepisodes):
-        k1 = random.randint(0, len(p)-3)
-        k2 = random.randint(k1+2, len(p)-1)
-        pneu = kantentausch(p,k1,k2)
-        tourLengthNeu = measurePath(pneu, distances)
-        if tourLengthNeu < tourLength:
-            p = pneu
-            tourLength = tourLengthNeu
-            route = [cities[i] for i in p]
-            print("iteration: {} tour: {} length: {}".format(j+1, route, tourLength))
-        elif j%100000 == 0:
-            print("Episode:", j)
-    print("Best tour: {} length: {}".format(route, tourLength))
-
-"""
 
 #linear:
 def cool1(starttemperatur,endtemperature, t, maxepisodes):
@@ -158,11 +137,11 @@ def SA(p, maxepisodes,cooling):
            temperature = cool2(starttemperature, endtemperature, t, maxepisodes)
         elif cooling == 3:
             temperature = cool1(starttemperature, endtemperature, t, maxepisodes)
-            
+
         t +=1
 
 
-maximalNoOfCities = 10
+
 
 # load the distance matrix and city names
 (cities, distances) = loadDistances()
@@ -173,7 +152,11 @@ maximalNoOfCities = 10
 # print distance matrix
 #print(distances[:maximalNoOfCities, :maximalNoOfCities])
 
+#hyperparameter:
 maxepisodes = 1000000
+coolingschema = 3
+maximalNoOfCities = 16
+
 p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
 #route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
 #print(route)   #ausgabe der route mit namen
@@ -182,4 +165,8 @@ p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufällige
 
 #twoopt_random(p, maxepisodes)
 
-SA(p, maxepisodes, 3)
+zeit1 = time.ctime()
+SA(p, maxepisodes, coolingschema)
+zeit2 = time.ctime()
+print(zeit1)
+print(zeit2)

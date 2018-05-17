@@ -3,6 +3,7 @@ from numpy import *
 from random import *
 import random
 import itertools
+import time
 
 
 from itertools import permutations
@@ -67,7 +68,7 @@ def twoopt_random(p, maxepisodes):
 
 
 
-maximalNoOfCities = 16
+maximalNoOfCities = 10
 
 # load the distance matrix and city names
 (cities, distances) = loadDistances()
@@ -85,4 +86,9 @@ route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
 #p = array([1,2,3,4,5,6,7,8,9,10])
 #print(p)    #ausgabe der route mit indexn
 
+
+zeit1 = time.ctime()
 twoopt_random(p, maxepisodes)
+zeit2 = time.ctime()
+print(zeit1)
+print(zeit2)

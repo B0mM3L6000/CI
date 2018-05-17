@@ -2,6 +2,7 @@ import numpy as np
 from numpy import *
 from random import *
 import itertools
+import time
 
 
 from itertools import permutations
@@ -72,5 +73,8 @@ maximalNoOfCities = 10
 #print(distances[:maximalNoOfCities, :maximalNoOfCities])
 
 # bruteforcen
-
+zeit1 = time.ctime()
 bruteforce(maximalNoOfCities)
+zeit2 = time.ctime()
+print(zeit1)
+print(zeit2)
