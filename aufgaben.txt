@@ -1,4 +1,9 @@
-Aufgabe 1:
+Code im Anhang oder auf https://github.com/B0mM3L6000/CI
+
+
+##########################################################
+
+Aufgabe 1 (bruteforce_tsp.py):
 
 Die kürzeste Tour ist 2275 lang und geht durch folgende Städte:
 
@@ -11,7 +16,7 @@ Für 16 Städte müssen 16! Touren betrachtet werden und daher wird es ca um den
 
 #########################################################
 
-Aufgabe 2:
+Aufgabe 2 (2opt.py):
 
 
 Für 10 Städte:
@@ -69,7 +74,7 @@ Best tour: ['Schwerin', 'Magdeburg', 'Potsdam', 'Berlin', 'Dresden', 'Erfurt', '
 
 #################################################################
 
-Aufgabe 3:
+Aufgabe 3 (SA.py):
 
 
 Hyperparameter:
@@ -84,48 +89,63 @@ Coolingschema:
     - Schema 3:   newtemperature = starttemperatur * (2.718 ** ((-1)*(1/(maxepisodes**2))*math.log(starttemperatur/endtemperature)*(t**2)))
  
 
+Für 10 Städte:
+
+Coolingschema 1:
+Routenlaenge: 2275.0 Zeit: 20.954009771347046 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.099207162857056 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.385725736618042 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.07268500328064 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.314931631088257 Sekunden
+Mittelwert Laenge: 2275.0 Mittelwert Zeit: 21.16531186103821 Beste Tourenlaenge: 2275.0
+Coolingschema 2:
+Routenlaenge: 2275.0 Zeit: 21.896210432052612 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.67549777030945 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.215673446655273 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.030713319778442 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.03573513031006 Sekunden
+Mittelwert Laenge: 2275.0 Mittelwert Zeit: 21.37076601982117 Beste Tourenlaenge: 2275.0
+Coolingschema 3:
+Routenlaenge: 2275.0 Zeit: 21.078577756881714 Sekunden
+Routenlaenge: 2275.0 Zeit: 20.972203254699707 Sekunden
+Routenlaenge: 2275.0 Zeit: 20.95048761367798 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.04699468612671 Sekunden
+Routenlaenge: 2275.0 Zeit: 21.156643390655518 Sekunden
+Mittelwert Laenge: 2275.0 Mittelwert Zeit: 21.040981340408326 Beste Tourenlaenge: 2275.0
+
+
+
+
 Für 16 Städte:
     
-    Schema 1:
-        
-        Run 1:
-        Run 2:
-        Run 3:
-        Run 4:
-        Run 5:
-
-        Best:
-        Average:
-
-    
-    Schema 2:
-        
-        Run 1:
-        Run 2:
-        Run 3:
-        Run 4:
-        Run 5:
-
-        Best:
-        Average:
-
-    
-    Schema 3:
-        
-        Run 1:
-        Run 2:
-        Run 3:
-        Run 4:
-        Run 5:
-
-        Best:
-        Average:
+Coolingschema 1:
+Routenlaenge: 2947.0 Zeit: 26.261371612548828 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.81058430671692 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.321378707885742 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.221474647521973 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.29929828643799 Sekunden
+Mittelwert Laenge: 2824.6 Mittelwert Zeit: 26.38282151222229 Beste Tourenlaenge: 2947.0
+Coolingschema 2:
+Routenlaenge: 2794.0 Zeit: 25.805976390838623 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.671555757522583 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.129806995391846 Sekunden
+Routenlaenge: 2794.0 Zeit: 25.726290941238403 Sekunden
+Routenlaenge: 2794.0 Zeit: 25.90587878227234 Sekunden
+Mittelwert Laenge: 2794.0 Mittelwert Zeit: 26.047901773452757 Beste Tourenlaenge: 2794.0
+Coolingschema 3:
+Routenlaenge: 2794.0 Zeit: 26.514080047607422 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.546436309814453 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.820090532302856 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.18350386619568 Sekunden
+Routenlaenge: 2794.0 Zeit: 26.300477504730225 Sekunden
+Mittelwert Laenge: 2794.0 Mittelwert Zeit: 26.47291765213013 Beste Tourenlaenge: 2794.0
 
 
 
 
 Für 10 Städte fand meine SA Implentierung immer die beste Tour, war allerdings langsamer als mein Bruteforce, obwohl er weniger Touren inspiziert hat (1 Mil. statt 3,62 Mil). 
-Für 16 Städte war SA Brutforce allerdings klar überlegen, da es in kurzer Zeit jedesmal auf die beste Lösung kam. Gegenüber 2opt war es zwar langsamer, aber dafür auch genauer.
+Für 16 Städte war SA Brutforce allerdings klar überlegen, da es in kurzer Zeit jedesmal auf die beste oder fast beste Lösung kam. Gegenüber 2opt war es zwar langsamer (doppelte Dauer), aber dafür auch genauer.
+Beim SA wurden für 16 Städte in meiner Implementierung immer 1 Millionen Touren begutachtet, was erheblich weniger ist gegenüber den 16! Touren von Bruteforce.
 
 
 

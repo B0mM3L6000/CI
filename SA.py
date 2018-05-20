@@ -116,13 +116,11 @@ def SA(p, maxepisodes,cooling):
 
         if epsilon <= (2.718**(((fneu - falt)/temperature)*(-1))):
             #update neue tour
-            #print("test1")
             p = pneu
             route = [cities[i] for i in p]
             print("iteration: {} tour: {} length: {}".format(j+1, route, fneu))
         elif fneu <= falt:
             #update neue tour
-            #print("lalala")
             p = pneu
             route = [cities[i] for i in p]
             print("iteration: {} tour: {} length: {}".format(j+1, route, fneu))
@@ -156,7 +154,7 @@ def SA(p, maxepisodes,cooling):
 #hyperparameter:
 maxepisodes = 1000000
 coolingschema = 3
-maximalNoOfCities = 16
+maximalNoOfCities = 10
 
 #p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
 
