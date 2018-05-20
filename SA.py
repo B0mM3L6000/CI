@@ -139,6 +139,7 @@ def SA(p, maxepisodes,cooling):
             temperature = cool1(starttemperature, endtemperature, t, maxepisodes)
 
         t +=1
+    return p
 
 
 
@@ -157,7 +158,8 @@ maxepisodes = 1000000
 coolingschema = 3
 maximalNoOfCities = 16
 
-p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
+#p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufälligen route zum starten
+
 #route = [cities[i] for i in p]    #zuordnen der namen zu den indexen
 #print(route)   #ausgabe der route mit namen
 #testarray = array([1,2,3,4,5,6,7,8,9,10])
@@ -165,8 +167,64 @@ p = np.random.permutation(maximalNoOfCities)    #initialisieren einer zufällige
 
 #twoopt_random(p, maxepisodes)
 
-zeit1 = time.ctime()
-SA(p, maxepisodes, coolingschema)
-zeit2 = time.ctime()
-print(zeit1)
-print(zeit2)
+#zeit1 = time.time()
+#zeit1 = time.ctime()
+#SA(p, maxepisodes, coolingschema)
+#zeit2 = time.ctime()
+#zeit2 = time.time()
+#print(zeit2-zeit1)
+#print(time)
+#print(time2)
+#print(time2-time)
+
+
+#daten für aufgabe erheben:
+dauern = list()
+routen = list()
+laengen = list()
+
+for coolingvariable in range(1,4):
+    for durchlaufe in range(5):
+        zeit1 = time.time()
+        p = np.random.permutation(maximalNoOfCities)
+        p = SA(p, maxepisodes, coolingvariable)
+        plength = measurePath(p, distances)
+        zeit2 = time.time()
+        dauer = zeit2 - zeit1
+        dauern.append(dauer)
+        routen.append(p)
+        laengen.append(plength)
+
+print("Coolingschema 1:")
+mittellaenge = 0
+mittelzeit = 0
+beste = 0
+for i in range(5):
+    print("Routenlaenge:", laengen[i],"Zeit:",dauern[i], "Sekunden")
+    mittellaenge += laengen[i]
+    mittelzeit += dauern[i]
+    if laengen[i] > beste:
+        beste = laengen[i]
+print("Mittelwert Laenge:", (mittellaenge/5), "Mittelwert Zeit:", (mittelzeit/5), "Beste Tourenlaenge:", beste)
+print("Coolingschema 2:")
+mittellaenge = 0
+mittelzeit = 0
+beste = 0
+for i in range(5):
+    print("Routenlaenge:", laengen[i+5],"Zeit:",dauern[i+5], "Sekunden")
+    mittellaenge += laengen[i+5]
+    mittelzeit += dauern[i+5]
+    if laengen[i+5] > beste:
+        beste = laengen[i+5]
+print("Mittelwert Laenge:", (mittellaenge/5), "Mittelwert Zeit:", (mittelzeit/5), "Beste Tourenlaenge:", beste)
+mittellaenge = 0
+mittelzeit = 0
+beste = 0
+print("Coolingschema 3:")
+for i in range(5):
+    print("Routenlaenge:", laengen[i+10],"Zeit:",dauern[i+10], "Sekunden")
+    mittellaenge += laengen[i+10]
+    mittelzeit += dauern[i+10]
+    if laengen[i+10] > beste:
+        beste = laengen[i+10]
+print("Mittelwert Laenge:", (mittellaenge/5), "Mittelwert Zeit:", (mittelzeit/5), "Beste Tourenlaenge:", beste)
