@@ -112,16 +112,37 @@ def edge_recomb(parent1, parent2, p = 0.4):
     table[tmp2].append(parent2[len(parent2)-2])
     table[tmp2].append(parent2[0])
     print(table)
-    #doppelte einträge markieren und auf eine zahl reduzieren:
+    #doppelte einträge markieren (noch zu implentieren) und auf eine zahl reduzieren:
+    for i in range(len(table)):
+        table[i] = list(set(table[i]))
+    print(table)
 
     #erstellen des kindes:
     #auswahl des ersten allels von parent1:
-    tmp = parent1[0]-1
-    for i in range(len(parent1)):
-        newtour.append(tmp+1)
+    tmp = parent1[0]
+    print(tmp)
+    for i in range(len(parent1)-1):
+        print("schleifendurchlauf", i)
+        newtour.append(tmp)
         #löschen dieses allels aus dem edge table:
-        #auswahl neues allel anhand regeln
+        for _ in range(len(table)):
+            if tmp in table[_]:
+                table[_].remove(tmp)
+        #auswahl neues allel anhand der regel welche nachbarn liste im table am kürzesten ist (und davon die erste)
+        indexalt = tmp - 1
+        indexkandidaten = table[indexalt]
+        print("indexkandidaten:", indexkandidaten)
+        indextmp = indexkandidaten[0]
+        for x in range(1,len(indexkandidaten)):
+            if len(table[indextmp - 1]) > len(table[indexkandidaten[x] - 1]):
+                indextmp = indexkandidaten[x]
+        tmp = indextmp
+        print("auswahl:", tmp)
+        #mn,idx = min( (len(table[j]),j) for j in range(len(table)) )
+        #print(idx)
         #tmp = #neues allel
+    newtour.append(tmp)
+    print(table)
 
     return newtour
 
