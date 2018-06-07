@@ -211,6 +211,7 @@ def uobcrossover(parent1, parent2, p = 0.4):
         tmp = parent2[i]
         if tmp in genes1:
             genes2.append(parent2[i])
+    j = 0
     for i in range(len(newtour)):   #crossoverschritt
         if gaps[i] == 1:
             newtour[i] = genes2[j]
