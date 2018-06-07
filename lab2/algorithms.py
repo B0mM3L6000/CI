@@ -193,11 +193,70 @@ def arbper(tour, p = 0.4):
 
 
 # crossover 1:
+# uniform order-based crossover:
+
+def uobcrossover(parent1, parent2, p = 0.4):
+    newtour = parent1
+    gaps = [0 for i in range(len(newtour))] #erstelle liste für gaps
+    for i in range(len(newtour)):   #mit wahrscheinlichkeit p wird ein gap gemacht (kodiert durch 1 in gaps)
+        randomnumber = random.uniform(0,1)
+        if randomnumber <= p:
+            gaps[i] = 1
+    genes1 = []
+    for i in range(len(newtour)):   #auslesen welche werte die gaps im parent 1 haben
+        if gaps[i] == 1:
+            genes1.append(parent1[i])
+    genes2 = []
+    for i in range(len(parent2)):   #auslesen welche reihenfolge sie in partent2 haben
+        tmp = parent2[i]
+        if tmp in genes1:
+            genes2.append(parent2[i])
+    for i in range(len(newtour)):   #crossoverschritt
+        if gaps[i] == 1:
+            newtour[i] = genes2[j]
+            j += 1
+    return newtour
 
 
-#crossover 2:
+# crossover 2:
+# edge recombination:
 
+def edge_recomb(parent1, parent2, p = 0.4):
+    newtour = []
+    table = [[] for i in range(len(parent1))]  #2dimensionale liste
+    # edge table erstellen:
+    tmp1 = parent1[0] - 1
+    tmp2 = parent2[0] - 1
+    table[tmp1].append(parent1[len(parent1)-1])
+    table[tmp1].append(parent1[1])
+    table[tmp2].append(parent2[len(parent2)-1])
+    table[tmp2].append(parent2[1])
+    for i in range(1, len(parent1)-1):
+        tmp1 = parent1[i] - 1
+        tmp2 = parent2[i] - 1
+        table[tmp1].append(parent1[i-1])
+        table[tmp1].append(parent1[i+1])
+        table[tmp2].append(parent2[i-1])
+        table[tmp2].append(parent2[i+1])
+    tmp1 = parent1[len(parent1)-1] - 1
+    tmp2 = parent2[len(parent1)-1] - 1
+    table[tmp1].append(parent1[len(parent1)-2])
+    table[tmp1].append(parent1[0])
+    table[tmp2].append(parent2[len(parent2)-2])
+    table[tmp2].append(parent2[0])
+    print(table)
+    #doppelte einträge markieren und auf eine zahl reduzieren:
 
+    #erstellen des kindes:
+    #auswahl des ersten allels von parent1:
+    tmp = parent1[0]-1
+    for i in range(len(parent1)):
+        newtour.append(tmp+1)
+        #löschen dieses allels aus dem edge table:
+        #auswahl neues allel anhand regeln
+        tmp = #neues allel
+
+    return newtour
 
 
 
@@ -254,7 +313,8 @@ def EA_tour(tsp, population_size, max_generations):
         print("0040: recombining parents")
         children = [] #kinder initialisieren
         for i in range(0, population_size):
-            children.append(recombine(parents1[i], parents2[i])) #elternpaare kombinieren um kinder zu erstellen
+            #children.append(recombine(parents1[i], parents2[i])) #elternpaare kombinieren um kinder zu erstellen
+            children.append(uobcrossover(parents1[i], parents2[i])) # uniform order based crossover (default p = 0.4)
 
         # pop3=mutate (arbper oder pairswap / gegebenfalls noch wahrscheinlichkeit
         #              anpassen mit parameter p [default auf 0.4])
