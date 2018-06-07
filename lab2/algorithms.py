@@ -145,6 +145,7 @@ def HC_tour(tsp, max_iterations):
 def calc_HC_tour(tsp):
     return path_length(tsp, HC_tour(tsp, 100000))
 
+"""
 def node_xchg_step(tour):
     ## exchange nodes in a tour
     # i and k should be between ZERO and #CITIES-1
@@ -155,9 +156,54 @@ def node_xchg_step(tour):
     tour[i] = tour[k]
     tour[k] = node
     return tour
+"""
+#mutation 1:
+def pairswap(tour, p = 0.4):
+    #mache einen pairswap mit wahrscheinlichkeit p
+    randomnumber = random.uniform(0,1)
+    newtour = tour
+    if randomnumber <= p:
+        gene1 = random.randint(0,len(tour)-1)   #auswählen der 2 gene
+        gene2 = random.randint(0,len(tour)-1)
+        while gene2 == gene1:
+            gene2 = random.randint(0,len(tour)-1)
+        newtour[gene1], newtour[gene2] = newtour[gene2], newtour[gene1]   #tauschen der gene
+    return newtour
+
+#mutation 2:
+def arbper(tour, p = 0.4):
+    #mache eine arbitrary permutation mit wahrscheinlichkeit p
+    randomnumber = random.uniform(0,1)
+    newtour = tour
+    if randomnumber <= p: #auswählen der grenzen für die arb permutation
+        bound1 = random.randint(0,len(tour)-1)
+        bound2 = random.randint(0,len(tour)-1)
+        while bound2 == bound1:
+            bound2 = random.randint(0,len(tour)-1)
+        if bound2 < bound1: #sortieren
+            bound2, bound1 = bound1, bound2
+        bound2 += 1 #wichtig für indexe
+        tmptour = newtour[bound1:bound2]    #ab hier durchführen der veränderung
+        tmptour = random.sample(tmptour, len(tmptour)) #(sufflen)
+        for _ in range(bound1,bound2): #geshuffeltes element wieder einfügen und vorher altes entfernen
+            newtour.pop(bound1)
+        for i in range(bound1, bound2):
+            newtour.insert(i, tmptour[i-bound1])
+    return newtour    #neue tour ausgeben
 
 
-# implements n touirnament selection
+# crossover 1:
+
+
+#crossover 2:
+
+
+
+
+
+
+
+# implements n tournament selection
 def tournament_selection(fitness, n):
     if n < 1:   #error falls n kleiner 1 da nur mit 1 odermehr funktioniert
         sys.exit("ERROR in n tournament selection: n is smaller than 1")
@@ -201,8 +247,8 @@ def EA_tour(tsp, population_size, max_generations):
         parents1 = []
         parents2 = []
         for _ in range(0, population_size):
-            parents1.append(list(pop[tournament_selection(fit, 3)])) #auswählen eines elternpaars aus der population mit dem index aus tourney select
-            parents2.append(list(pop[tournament_selection(fit, 3)]))
+            parents1.append(list(pop[tournament_selection(fit, 3)])) #auswählen eines elternpaars
+            parents2.append(list(pop[tournament_selection(fit, 3)])) #aus der population mit dem index aus tourney select
 
         # pop2=recombine
         print("0040: recombining parents")
@@ -210,10 +256,12 @@ def EA_tour(tsp, population_size, max_generations):
         for i in range(0, population_size):
             children.append(recombine(parents1[i], parents2[i])) #elternpaare kombinieren um kinder zu erstellen
 
-        # pop3=mutate
+        # pop3=mutate (arbper oder pairswap / gegebenfalls noch wahrscheinlichkeit
+        #              anpassen mit parameter p [default auf 0.4])
         print("0050: mutating children")
         for i in range(0, population_size):
-            node_xchg_step(children[i]) #kinder mutieren
+            arbper(children[i]) #kinder mutieren
+            #pairswap(children[i])
 
         # evaluate pop3
         print("0060: evaluating fitness of the children")
