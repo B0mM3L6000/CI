@@ -145,6 +145,7 @@ def HC_tour(tsp, max_iterations):
 def calc_HC_tour(tsp):
     return path_length(tsp, HC_tour(tsp, 100000))
 
+"""
 def node_xchg_step(tour):
     ## exchange nodes in a tour
     # i and k should be between ZERO and #CITIES-1
@@ -155,9 +156,165 @@ def node_xchg_step(tour):
     tour[i] = tour[k]
     tour[k] = node
     return tour
+"""
+#mutation 1:
+def pairswap(tour, p = 0.4):
+    #mache einen pairswap mit wahrscheinlichkeit p
+    randomnumber = random.uniform(0,1)
+    newtour = tour
+    if randomnumber <= p:
+        gene1 = random.randint(0,len(tour)-1)   #auswählen der 2 gene
+        gene2 = random.randint(0,len(tour)-1)
+        while gene2 == gene1:
+            gene2 = random.randint(0,len(tour)-1)
+        newtour[gene1], newtour[gene2] = newtour[gene2], newtour[gene1]   #tauschen der gene
+    return newtour
+
+#mutation 2:
+def arbper(tour, p = 0.4):
+    #mache eine arbitrary permutation mit wahrscheinlichkeit p
+    randomnumber = random.uniform(0,1)
+    newtour = tour
+    if randomnumber <= p: #auswählen der grenzen für die arb permutation
+        bound1 = random.randint(0,len(tour)-1)
+        bound2 = random.randint(0,len(tour)-1)
+        while bound2 == bound1:
+            bound2 = random.randint(0,len(tour)-1)
+        if bound2 < bound1: #sortieren
+            bound2, bound1 = bound1, bound2
+        bound2 += 1 #wichtig für indexe
+        tmptour = newtour[bound1:bound2]    #ab hier durchführen der veränderung
+        tmptour = random.sample(tmptour, len(tmptour)) #(sufflen)
+        for _ in range(bound1,bound2): #geshuffeltes element wieder einfügen und vorher altes entfernen
+            newtour.pop(bound1)
+        for i in range(bound1, bound2):
+            newtour.insert(i, tmptour[i-bound1])
+    return newtour    #neue tour ausgeben
 
 
-# implements n touirnament selection
+# crossover 1:
+# uniform order-based crossover:
+
+def uobcrossover(parent1, parent2, p = 0.4):
+    newtour = parent1
+    gaps = [0 for i in range(len(newtour))] #erstelle liste für gaps
+    for i in range(len(newtour)):   #mit wahrscheinlichkeit p wird ein gap gemacht (kodiert durch 1 in gaps)
+        randomnumber = random.uniform(0,1)
+        if randomnumber <= p:
+            gaps[i] = 1
+    genes1 = []
+    for i in range(len(newtour)):   #auslesen welche werte die gaps im parent 1 haben
+        if gaps[i] == 1:
+            genes1.append(parent1[i])
+    genes2 = []
+    for i in range(len(parent2)):   #auslesen welche reihenfolge sie in partent2 haben
+        tmp = parent2[i]
+        if tmp in genes1:
+            genes2.append(parent2[i])
+    j = 0
+    for i in range(len(newtour)):   #crossoverschritt
+        if gaps[i] == 1:
+            newtour[i] = genes2[j]
+            j += 1
+    return newtour
+
+
+# crossover 2:
+# edge recombination:
+
+def edge_recomb(parent1, parent2, p = 0.4):
+    newtour = []
+    table = [[] for i in range(len(parent1))]  #2dimensionale liste
+    # edge table erstellen:
+    tmp1 = parent1[0]
+    tmp2 = parent2[0]
+    table[tmp1].append(parent1[len(parent1)-1])
+    table[tmp1].append(parent1[1])
+    table[tmp2].append(parent2[len(parent2)-1])
+    table[tmp2].append(parent2[1])
+    for i in range(1, len(parent1)-1):
+        tmp1 = parent1[i]
+        tmp2 = parent2[i]
+        table[tmp1].append(parent1[i-1])
+        table[tmp1].append(parent1[i+1])
+        table[tmp2].append(parent2[i-1])
+        table[tmp2].append(parent2[i+1])
+    tmp1 = parent1[len(parent1)-1]
+    tmp2 = parent2[len(parent1)-1]
+    table[tmp1].append(parent1[len(parent1)-2])
+    table[tmp1].append(parent1[0])
+    table[tmp2].append(parent2[len(parent2)-2])
+    table[tmp2].append(parent2[0])
+    #print(table)
+    #doppelte einträge markieren (noch zu implentieren) und auf eine zahl reduzieren:
+    dublist = []
+    for i in range(len(parent1)):
+        dublist.append(anydup(table[i]))
+    #print(dublist)
+    for i in range(len(table)):
+        table[i] = list(set(table[i]))
+    #print(table)
+
+    #erstellen des kindes:
+    #auswahl des ersten allels von parent1:
+    tmp = parent1[0]
+    #print(tmp)
+    for i in range(len(parent1)-1):
+        #print("schleifendurchlauf", i)
+        newtour.append(tmp)
+        #löschen dieses allels aus dem edge table:
+        for _ in range(len(table)):
+            if tmp in table[_]:
+                table[_].remove(tmp)
+        for _ in range(len(dublist)):
+            if tmp in dublist[_]:
+                dublist[_].remove(tmp)
+        #print("table:",table)
+        #print("dublist:", dublist)
+        #auswahl neues allel anhand der regel welche nachbarn liste im table am kürzesten ist (und davon die erste)
+        indexalt = tmp
+        indexkandidaten = table[indexalt]
+        randomstep = False
+        if indexkandidaten == []:
+            for x in range(len(parent1)):
+                if x not in newtour:
+                    tmp = x
+                    randomstep = True
+                    break
+
+        #print("indexkandidaten:", indexkandidaten)
+        #print("dubs:", dublist[indexalt])
+        if randomstep == False:
+            indextmp = indexkandidaten[0]
+            for x in range(1,len(indexkandidaten)):
+                if len(table[indextmp]) > len(table[indexkandidaten[x]]):
+                    indextmp = indexkandidaten[x]
+            if dublist[indexalt] != []:
+                indextmp = dublist[indexalt][0]
+            tmp = indextmp
+        #print("auswahl:", tmp)
+        #mn,idx = min( (len(table[j]),j) for j in range(len(table)) )
+        #print(idx)
+        #tmp = #neues allel
+    newtour.append(tmp)
+    #print(table)
+
+    return newtour
+
+def anydup(thelist):
+  seen = set()
+  dubs = []
+  for x in thelist:
+    if x in seen:
+        dubs.append(x)
+    seen.add(x)
+  return dubs
+
+
+
+
+
+# implements n tournament selection
 def tournament_selection(fitness, n):
     if n < 1:   #error falls n kleiner 1 da nur mit 1 odermehr funktioniert
         sys.exit("ERROR in n tournament selection: n is smaller than 1")
@@ -170,7 +327,7 @@ def tournament_selection(fitness, n):
         n = n - 1 #verringern damit nur n kandidaten ausgewhählt werden
         if fitness[index2] < fitness[index]: #wenn neuer kandidat besser (kürzere tour) ist dann ersetzten
             index = index2
-
+    #print(index)
     return index   #ausgeben des besten Kandidaten des Turniers
 
 def recombine(a,b):
@@ -190,7 +347,7 @@ def EA_tour(tsp, population_size, max_generations):
         pop.append([i for i in range(tsp["DIMENSION"])])
         random.shuffle(pop[-1])
         fit.append(path_length(tsp, tour_from_path(list(pop[-1]))))
-
+    #print(pop, fit)
     # do max_generations iterations
     print("0020: starting the generations loop")
     for gen in range(0, max_generations):
@@ -201,19 +358,26 @@ def EA_tour(tsp, population_size, max_generations):
         parents1 = []
         parents2 = []
         for _ in range(0, population_size):
-            parents1.append(list(pop[tournament_selection(fit, 3)])) #auswählen eines elternpaars aus der population mit dem index aus tourney select
-            parents2.append(list(pop[tournament_selection(fit, 3)]))
-
+            parents1.append(list(pop[tournament_selection(fit, 3)])) #auswählen eines elternpaars
+            #print(pop)
+            parents2.append(list(pop[tournament_selection(fit, 3)])) #aus der population mit dem index aus tourney select
+        #print("Parents1:", parents1)
+        #print("Parents2:", parents2)
         # pop2=recombine
         print("0040: recombining parents")
         children = [] #kinder initialisieren
         for i in range(0, population_size):
-            children.append(recombine(parents1[i], parents2[i])) #elternpaare kombinieren um kinder zu erstellen
+            #children.append(recombine(parents1[i], parents2[i])) #elternpaare kombinieren um kinder zu erstellen
+            #children.append(uobcrossover(parents1[i], parents2[i],0.5)) # uniform order based crossover (default p = 0.4)
+            children.append(edge_recomb(parents1[i], parents2[i])) # edge recombination (default p = 0.4)
 
-        # pop3=mutate
+        # pop3=mutate (arbper oder pairswap / gegebenfalls noch wahrscheinlichkeit
+        #              anpassen mit parameter p [default auf 0.4])
         print("0050: mutating children")
         for i in range(0, population_size):
-            node_xchg_step(children[i]) #kinder mutieren
+            children[i] = arbper(children[i], 0.8) #kinder mutieren
+            #children[i] = pairswap(children[i], 0.8)
+            #children[i] = node_xchg_step(children[i])
 
         # evaluate pop3
         print("0060: evaluating fitness of the children")
@@ -239,4 +403,4 @@ def EA_tour(tsp, population_size, max_generations):
 
 
 def calc_EA_tour(tsp):
-    return path_length(tsp, EA_tour(tsp, 20, 5000))
+    return path_length(tsp, tour_from_path(EA_tour(tsp, 20, 5000)))
