@@ -149,6 +149,8 @@ def print_results_ranks(alpha, mean_a, mean_b):
 
 mean_a, mean_b = test_all(data_a, data_b, alpha)
 print_results_raw(alpha, mean_a, mean_b)
+
+
 """
 mean_a, mean_b = test_all2(data_a, data_b, alpha)
 print_results_ranks(alpha, mean_a, mean_b)
