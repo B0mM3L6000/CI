@@ -99,59 +99,69 @@ print("")
 def test_all(a, b, alpha = 0.05):
     mean_a = np.mean(a)
     mean_b = np.mean(b)
+    std_dev_a = np.std(a, ddof=1)
+    std_dev_b = np.std(b, ddof=1)
+    percentile2_5 = np.percentile(a,)
+    print("testpercentile:",percentile2_5)
 
-    return mean_a, mean_b
+    return mean_a, mean_b, std_dev_a, std_dev_b
 
 #Rankedbased Tests:
 
 def test_all2(a, b, alpha = 0.05):
     rankA, rankB = ranks(a,b)
-
-    return
+    mean_a = np.mean(rankA)
+    mean_b = np.mean(rankB)
+    std_dev_a = np.std(rankA, ddof=1)
+    std_dev_b = np.std(rankB, ddof=1)
+    return mean_a, mean_b, std_dev_a, std_dev_b
 
 #print results
 
-def print_results_raw(alpha,mean_a,mean_b):
+def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b):
     print("*****************Full analysis of raw data*****************")
-    print("Alpha:", alpha)
+    print("Alpha:\t", alpha)
     # Sequence A:
     print("")
     print("***Sequence A:")
     print("")
     print("Mean:\t", round(mean_a, 4))
+    print("Std. Deviation:\t", round(std_dev_a, 4))
 
     # Sequence B:
     print("")
     print("***Sequence B:")
     print("")
     print("Mean:\t", round(mean_b, 4))
+    print("Std. Deviation:\t", round(std_dev_b, 4))
 
     return
 
-def print_results_ranks(alpha, mean_a, mean_b):
+def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b):
     print("*****************Full analysis of rank data*****************")
-    print("Alpha:", alpha)
+    print("Alpha:\t", alpha)
 
     #Sequence A:
     print("")
     print("***Sequence A:")
     print("")
     print("Mean:\t",round(mean_a, 4))
+    print("Std. Deviation:\t", round(std_dev_a, 4))
 
     #Sequence B:
     print("")
     print("***Sequence B:")
     print("")
     print("Mean:\t",round(mean_b, 4))
+    print("Std. Deviation:\t", round(std_dev_b, 4))
 
 
     return
 
-mean_a, mean_b = test_all(data_a, data_b, alpha)
-print_results_raw(alpha, mean_a, mean_b)
+mean_a, mean_b, std_dev_a, std_dev_b = test_all(data_a, data_b, alpha)
+print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b)
 
 
-"""
-mean_a, mean_b = test_all2(data_a, data_b, alpha)
-print_results_ranks(alpha, mean_a, mean_b)
-"""
+
+mean_a, mean_b, std_dev_a, std_dev_b = test_all2(data_a, data_b, alpha)
+print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b)
