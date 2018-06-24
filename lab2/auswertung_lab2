@@ -1,0 +1,77 @@
+﻿Computational Intelligence – Lab 2 – EAs:
+
+Gewählte Mutations-Operatoren:
+
+	1. Pair Swap
+	2. Arbitrary Permutation
+	
+	Beide jeweils als Binary Mutation
+
+	Beide Operatoren verändern die Tour, erhalten aber trotzdem eine valide TSP 	Tour. 
+
+Gewählte Crossover-Operatoren:
+
+	1. Uniform Order-Based Crossover
+	2. Edge Recombination
+
+	Beide Operatoren erhalten eine valide TSP Tour. Das Edge Recombination 	Verfahren wurde außerdem speziell für tsp Probleme entwickelt.
+
+
+EA:
+
+Da in einigen Testreihen Pairswap und Edge Recombination empirisch die besten Ergebisse erzielten, wurden diese bevorzugt beim Design der Eas.
+Es ergaben sich folgende Mutations und Crossover Kombinationen, jeweils mit Tournament Selection:
+
+	(1) Edge Rec. + Pair Swap
+	(2) Edge Rec. + Arb. Per.
+	(3) Uniform Order-Based Crossover + Pair Swap
+
+Die Hyperparameter ergaben sich teilweise aus den Vorgaben (Pop.Size = 20, Gens. = 5000) und teilweise durch probieren. Auf eine Gridsearch oder ähnliches wurde verzichtet. Außerdem wurde für jede Kombination nur ein Durchlauf gemacht, daher sind die Ergebnisse mit Vorsicht zu genießen und eine statistisch robuste Hyperparametersearch würde die Ergebnisse sicherlich verbessern. Außerdem ist anzumerken, dass die Erhöhnung der Pop.Size den EA nicht in der Güte beeinflusst hat, allerdings die Zeit linear anstieg.
+
+(1):
+
+Hyperparameter:
+Tournament Size: 3
+p-pairswap: 0.7
+
+Beste Fitness (Tourlänge) nach 5000 Generations: 9260
+Dauer in Sekunden: 96.1368
+
+(2):
+
+Hyperparameter:
+Tournament Size: 3
+p-arb.per.: 0.8
+
+Beste Fitness (Tourlänge) nach 5000 Generations: 13381
+Dauer in Sekunden: 96.57397
+
+(3):
+
+Hyperparameter:
+Tournament Size: 3
+p-pairswap: 0.3
+p-uniform order-based crossover: 0.5
+
+Beste Fitness (Tourlänge) nach 5000 Generations: 9652
+Dauer in Sekunden: 52.2329
+
+(1) mit Pop-Size 100:
+
+Hyperparameter:
+Tournament Size: 3
+p-pairswap: 0.7
+
+Beste Fitness (Tourlänge) nach 5000 Generations: 9143
+Dauer in Sekunden: 481.7585
+
+(3) mit Pop-Size 100:
+
+Hyperparameter:
+Tournament Size: 3
+p-pairswap: 0.3
+p-uniform order-based crossover: 0.5
+
+Beste Fitness (Tourlänge) nach 5000 Generations: 10747
+Dauer in Sekunden: 259.6231
+
