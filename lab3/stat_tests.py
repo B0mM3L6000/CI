@@ -164,6 +164,7 @@ def test_all2(a, b, alpha = 0.05):
     ci_lower_a, ci_upper_a = sms.DescrStatsW(rankA).tconfint_mean()
     ci_lower_b, ci_upper_b = sms.DescrStatsW(rankB).tconfint_mean()
 
+
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
              percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b)
