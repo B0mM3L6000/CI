@@ -101,7 +101,9 @@ def test_all(a, b, alpha = 0.05):
     mean_b = np.mean(b)
     std_dev_a = np.std(a, ddof=1)
     std_dev_b = np.std(b, ddof=1)
-    percentile2_5 = np.percentile(a,)
+    percentile2_5 = np.percentile(a,2.5)
+    if len(a)*0.025 < 1:
+        percentile2_5 = a[0]
     print("testpercentile:",percentile2_5)
 
     return mean_a, mean_b, std_dev_a, std_dev_b
