@@ -99,47 +99,100 @@ print("")
 def test_all(a, b, alpha = 0.05):
     mean_a = np.mean(a)
     mean_b = np.mean(b)
+
     std_dev_a = np.std(a, ddof=1)
     std_dev_b = np.std(b, ddof=1)
-    percentile2_5 = np.percentile(a,2.5)
-    if len(a)*0.025 < 1:
-        percentile2_5 = a[0]
-    print("testpercentile:",percentile2_5)
 
-    return mean_a, mean_b, std_dev_a, std_dev_b
+    percentile2_5_a = np.percentile(a,2.5)
+    if len(a)*0.025 < 1:
+        percentile2_5_a = sorted(a)[0]
+    percentile25_a = np.percentile(a,25)
+    percentile50_a = np.percentile(a,50)
+    percentile75_a = np.percentile(a,75)
+    percentile97_5_a = np.percentile(a,97.5)
+    if len(a)*0.975 > len(a)-1:
+        percentile97_5_a = sorted(a)[len(a)-1]
+
+    percentile2_5_b = np.percentile(b,2.5)
+    if len(b)*0.025 < 1:
+        percentile2_5_b = sorted(b)[0]
+    percentile25_b = np.percentile(b ,25)
+    percentile50_b = np.percentile(b,50)
+    percentile75_b = np.percentile(b,75)
+    percentile97_5_b = np.percentile(b,97.5)
+    if len(b)*0.975 > len(b)-1:
+        percentile97_5_b = sorted(b)[len(b)-1]
+
+    return mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b
 
 #Rankedbased Tests:
 
 def test_all2(a, b, alpha = 0.05):
     rankA, rankB = ranks(a,b)
+
     mean_a = np.mean(rankA)
     mean_b = np.mean(rankB)
+
     std_dev_a = np.std(rankA, ddof=1)
     std_dev_b = np.std(rankB, ddof=1)
-    return mean_a, mean_b, std_dev_a, std_dev_b
+
+    percentile2_5_a = np.percentile(rankA,2.5)
+    if len(rankA)*0.025 < 1:
+        percentile2_5_a = rankA[0]
+    percentile25_a = np.percentile(rankA,25)
+    percentile50_a = np.percentile(rankA,50)
+    percentile75_a = np.percentile(rankA,75)
+    percentile97_5_a = np.percentile(rankA,97.5)
+    if len(rankA)*0.975 > len(rankA)-1:
+        percentile97_5_a = rankA[len(rankA)-1]
+
+    percentile2_5_b = np.percentile(rankB,2.5)
+    if len(rankB)*0.025 < 1:
+        percentile2_5_b = rankB[0]
+    percentile25_b = np.percentile(rankB,25)
+    percentile50_b = np.percentile(rankB,50)
+    percentile75_b = np.percentile(rankB,75)
+    percentile97_5_b = np.percentile(rankB,97.5)
+    if len(rankB)*0.975 > len(rankB)-1:
+        percentile97_5_b = rankB[len(rankB)-1]
+
+    return mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b
 
 #print results
 
-def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b):
+def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b):
     print("*****************Full analysis of raw data*****************")
-    print("Alpha:\t", alpha)
+    print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
     print("")
     print("***Sequence A:")
     print("")
-    print("Mean:\t", round(mean_a, 4))
-    print("Std. Deviation:\t", round(std_dev_a, 4))
+    print("Mean:\t\t\t\t\t\t\t", round(mean_a, 4))
+    print("Std. Deviation:\t\t\t\t\t\t", round(std_dev_a, 4))
+    print("2.5th Percentile:\t\t\t\t\t", round(percentile2_5_a,4))
+    print("25th Percentile 25%:\t\t\t\t\t", round(percentile25_a,4))
+    print("50th Percentile 50%:\t\t\t\t\t", round(percentile50_a,4))
+    print("75th Percentile 75%:\t\t\t\t\t", round(percentile75_a,4))
+    print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
 
     # Sequence B:
     print("")
     print("***Sequence B:")
     print("")
-    print("Mean:\t", round(mean_b, 4))
-    print("Std. Deviation:\t", round(std_dev_b, 4))
+    print("Mean:\t\t\t\t\t\t\t", round(mean_b, 4))
+    print("Std. Deviation:\t\t\t\t\t\t", round(std_dev_b, 4))
+    print("2.5th Percentile:\t\t\t\t\t",round(percentile2_5_b,4))
+    print("25th Percentile 25%:\t\t\t\t\t", round(percentile25_b,4))
+    print("50th Percentile 50%:\t\t\t\t\t", round(percentile50_b,4))
+    print("75th Percentile 75%:\t\t\t\t\t", round(percentile75_b,4))
+    print("97.5th Percentile 97,5%:\t\t\t\t",round(percentile97_5_b,4))
 
-    return
 
-def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b):
+    print("")
+
+
+
+def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t", alpha)
 
@@ -147,23 +200,32 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b):
     print("")
     print("***Sequence A:")
     print("")
-    print("Mean:\t",round(mean_a, 4))
-    print("Std. Deviation:\t", round(std_dev_a, 4))
+    print("Mean:\t\t\t\t\t\t\t",round(mean_a, 4))
+    print("Std. Deviation:\t\t\t\t\t\t", round(std_dev_a, 4))
+    print("2.5th Percentile:\t\t\t\t\t", round(percentile2_5_a,4))
+    print("25th Percentile 25%:\t\t\t\t\t", round(percentile25_a,4))
+    print("50th Percentile 50%:\t\t\t\t\t", round(percentile50_a,4))
+    print("75th Percentile 75%:\t\t\t\t\t", round(percentile75_a,4))
+    print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
 
     #Sequence B:
     print("")
     print("***Sequence B:")
     print("")
-    print("Mean:\t",round(mean_b, 4))
-    print("Std. Deviation:\t", round(std_dev_b, 4))
+    print("Mean:\t\t\t\t\t\t\t",round(mean_b, 4))
+    print("Std. Deviation:\t\t\t\t\t\t", round(std_dev_b, 4))
+    print("2.5th Percentile:\t\t\t\t\t", round(percentile2_5_b,4))
+    print("25th Percentile 25%:\t\t\t\t\t", round(percentile25_b,4))
+    print("50th Percentile 50%:\t\t\t\t\t", round(percentile50_b,4))
+    print("75th Percentile 75%:\t\t\t\t\t", round(percentile75_b,4))
+    print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_b,4))
 
 
-    return
 
-mean_a, mean_b, std_dev_a, std_dev_b = test_all(data_a, data_b, alpha)
-print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b)
-
+mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b = test_all(data_a, data_b, alpha)
+print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b)
 
 
-mean_a, mean_b, std_dev_a, std_dev_b = test_all2(data_a, data_b, alpha)
-print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b)
+
+mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b = test_all2(data_a, data_b, alpha)
+print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b, percentile75_b, percentile97_5_b)
