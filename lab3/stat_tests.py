@@ -122,10 +122,16 @@ def test_all(a, b, alpha = 0.05):
     if len(b)*0.975 > len(b)-1:
         percentile97_5_b = sorted(b)[len(b)-1]
 
-    ci_lower_a, ci_upper_a = sms.DescrStatsW(a).tconfint_mean()
-    ci_lower_b, ci_upper_b = sms.DescrStatsW(b).tconfint_mean()
+    ci_lower_a, ci_upper_a = sms.DescrStatsW(a).tconfint_mean(alpha)
+    ci_lower_b, ci_upper_b = sms.DescrStatsW(b).tconfint_mean(alpha)
 
     #ts ci intervalle
+
+    #sharpio-wilk-test:
+    w_value_a, w_p_value_a = ss.shapiro(a)
+    w_value_b, w_p_value_b = ss.shapiro(b)
+
+    ###interset tests
 
     #ttest norm same sigma:
     tscore_norm_same, pvalue_norm_same = ss.ttest_ind(a,b)
@@ -140,7 +146,8 @@ def test_all(a, b, alpha = 0.05):
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
-            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
+            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
+            w_value_a, w_p_value_a, w_value_b, w_p_value_b)
 
 #Rankedbased Tests:
 
@@ -173,10 +180,16 @@ def test_all2(a, b, alpha = 0.05):
     if len(rankB)*0.975 > len(rankB)-1:
         percentile97_5_b = rankB[len(rankB)-1]
 
-    ci_lower_a, ci_upper_a = sms.DescrStatsW(rankA).tconfint_mean()
-    ci_lower_b, ci_upper_b = sms.DescrStatsW(rankB).tconfint_mean()
+    ci_lower_a, ci_upper_a = sms.DescrStatsW(rankA).tconfint_mean(alpha)
+    ci_lower_b, ci_upper_b = sms.DescrStatsW(rankB).tconfint_mean(alpha)
 
     #ts ci intervalle
+
+    #sharpio-wilk-test:
+    w_value_a, w_p_value_a = ss.shapiro(rankA)
+    w_value_b, w_p_value_b = ss.shapiro(rankB)
+
+    ###interset tests:
 
     #ttest norm same sigma:
     tscore_norm_same, pvalue_norm_same = ss.ttest_ind(rankA,rankB)
@@ -189,7 +202,8 @@ def test_all2(a, b, alpha = 0.05):
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
-            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
+            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
+            w_value_a,w_p_value_a,w_value_b,w_p_value_b)
 
 #print results
 
@@ -197,7 +211,8 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
                       percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                       percentile25_b, percentile50_b, percentile75_b, percentile97_5_b, ci_lower_a,
                       ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
-                      tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu):
+                      tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu,w_value_a,w_p_value_a,
+                      w_value_b,w_p_value_b):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -214,6 +229,10 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
     #ts ci prints
+    print("")
+    print("#sharpio-wilk-test:")
+    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
+    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
 
 
     # Sequence B:
@@ -230,6 +249,13 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
     #ts ci prints
+    print("")
+    print("#sharpio-wilk-test:")
+    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
+    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+
+    print("")
+    print("Interset Tests")
 
     print("")
     print("T-test und p-Value:")
@@ -256,7 +282,8 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                         percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                         ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                        pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu):
+                        pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
+                        w_value_a,w_p_value_a,w_value_b,w_p_value_b):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -274,6 +301,10 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
     #ts_ci print
+    print("")
+    print("#sharpio-wilk-test:")
+    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
+    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
 
     #Sequence B:
     print("")
@@ -289,6 +320,13 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
     #ts ci print
+    print("")
+    print("#sharpio-wilk-test:")
+    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
+    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+
+    print("")
+    print("Interset Tests")
 
     print("")
     print("T-test und p-Value:")
@@ -314,13 +352,14 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu) = test_all(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                   percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                   ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                  pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
+                  pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
+                  w_value_a, w_p_value_a, w_value_b, w_p_value_b)
 
 
 
@@ -328,10 +367,11 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu) = test_all2(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                     percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                     ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                    pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
+                    pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
+                    w_value_a, w_p_value_a, w_value_b, w_p_value_b)
