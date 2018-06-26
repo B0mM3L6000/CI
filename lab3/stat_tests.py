@@ -1,6 +1,7 @@
 import scipy.stats as ss
 import numpy as np
 import statsmodels.stats.api as sms
+from math import sqrt
 
 # import data
 
@@ -130,6 +131,13 @@ def test_all(a, b, alpha = 0.05):
     #sharpio-wilk-test:
     w_value_a, w_p_value_a = ss.shapiro(a)
     w_value_b, w_p_value_b = ss.shapiro(b)
+    #Kolmogorov–Smirnov-Test(normality):
+    ksscore_a, ks_p_value_a = ss.kstest(a,"norm")
+    ksscore_b, ks_p_value_b = ss.kstest(b, "norm")
+    #Anderson–Darling-Test:
+    anderson_a ,_, _ = ss.anderson(a)
+    anderson_b, _, _ = ss.anderson(b)
+
 
     ###interset tests
 
@@ -144,13 +152,19 @@ def test_all(a, b, alpha = 0.05):
     #Kolmogorov–Smirnov-Test:
     ksscore, ks_p_value = ss.ks_2samp(a,b)
 
+    #cohens d:
+    cohens_d = (mean_a - mean_b) / (sqrt((std_dev_a ** 2 + std_dev_b ** 2) / 2))
+
+    #hedges g:
+
 
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-            w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
+            w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
 
 #Rankedbased Tests:
 
@@ -191,6 +205,12 @@ def test_all2(a, b, alpha = 0.05):
     #sharpio-wilk-test:
     w_value_a, w_p_value_a = ss.shapiro(rankA)
     w_value_b, w_p_value_b = ss.shapiro(rankB)
+    #Kolmogorov–Smirnov-Test(normality):
+    ksscore_a, ks_p_value_a = ss.kstest(rankA,"norm")
+    ksscore_b, ks_p_value_b = ss.kstest(rankB, "norm")
+    #Anderson–Darling-Test:
+    anderson_a ,_, _ = ss.anderson(a)
+    anderson_b, _, _ = ss.anderson(b)
 
     ###interset tests:
 
@@ -205,11 +225,20 @@ def test_all2(a, b, alpha = 0.05):
     #Kolmogorov–Smirnov-Test:
     ksscore, ks_p_value = ss.ks_2samp(rankA,rankB)
 
+    #cohens d:
+    cohens_d = (mean_a - mean_b) / (sqrt((std_dev_a ** 2 + std_dev_b ** 2) / 2))
+
+    # hedges g:
+
+
+
+
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-            w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value)
+            w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
 
 #print results
 
@@ -218,7 +247,8 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
                       percentile25_b, percentile50_b, percentile75_b, percentile97_5_b, ci_lower_a,
                       ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
                       tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu,w_value_a,w_p_value_a,
-                      w_value_b,w_p_value_b,ksscore,ks_p_value):
+                      w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
+                      ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -236,9 +266,15 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
     #ts ci prints
     print("")
+    print("###Normality Tests:")
     print("#sharpio-wilk-test:")
     print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
     print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
+    print("#Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_a,4))
+    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_a,4))
+    print("#Anderson–Darling-Test:")
+    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_a,4))
 
 
     # Sequence B:
@@ -256,12 +292,18 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
     #ts ci prints
     print("")
+    print("###Normality Tests:")
     print("#sharpio-wilk-test:")
     print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
     print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+    print("#Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_b,4))
+    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_b,4))
+    print("#Anderson–Darling-Test:")
+    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_b,4))
 
     print("")
-    print("Interset Tests")
+    print("***Interset Tests")
 
     print("")
     print("T-test und p-Value:")
@@ -283,6 +325,10 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("ks score:\t\t\t\t\t\t\t", round(ksscore,4))
 
     print("")
+    print("Cohens-D:")
+    print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
+
+    print("")
     print("***************Full analysis of raw data done***************")
     print("")
     print("")
@@ -294,7 +340,8 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                         ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                         pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                        w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value):
+                        w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,
+                        ksscore_a, ksscore_b, ks_p_value_a, ks_p_value_b,anderson_a,anderson_b,cohens_d):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -313,9 +360,15 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
     #ts_ci print
     print("")
+    print("###Normality Tests:")
     print("#sharpio-wilk-test:")
     print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
     print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
+    print("#Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_a,4))
+    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_a,4))
+    print("#Anderson–Darling-Test:")
+    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_a,4))
 
     #Sequence B:
     print("")
@@ -332,12 +385,18 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
     #ts ci print
     print("")
+    print("###Normality Tests:")
     print("#sharpio-wilk-test:")
     print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
     print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+    print("#Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_b,4))
+    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_b,4))
+    print("#Anderson–Darling-Test:")
+    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_b,4))
 
     print("")
-    print("Interset Tests")
+    print("***Interset Tests")
 
     print("")
     print("T-test und p-Value:")
@@ -359,6 +418,10 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("ks score:\t\t\t\t\t\t\t", round(ksscore, 4))
 
     print("")
+    print("Cohens-D:")
+    print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
+
+    print("")
     print("***************Full analysis of rank data done***************")
     print("")
     print("")
@@ -368,14 +431,16 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value) = test_all(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                   percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                   ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                   pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                  w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
+                  w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
+                  ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
 
 
 
@@ -383,11 +448,13 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value) = test_all2(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                     percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                     ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                     pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                    w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
+                    w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
+                    ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
