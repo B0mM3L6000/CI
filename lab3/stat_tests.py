@@ -141,13 +141,16 @@ def test_all(a, b, alpha = 0.05):
     u_value, pvalue_mwu = ss.mannwhitneyu(a,b)
     pvalue_mwu = pvalue_mwu*2
 
+    #Kolmogorov–Smirnov-Test:
+    ksscore, ks_p_value = ss.ks_2samp(a,b)
+
 
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-            w_value_a, w_p_value_a, w_value_b, w_p_value_b)
+            w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
 
 #Rankedbased Tests:
 
@@ -199,11 +202,14 @@ def test_all2(a, b, alpha = 0.05):
     u_value, pvalue_mwu = ss.mannwhitneyu(rankA,rankB)
     pvalue_mwu = pvalue_mwu*2
 
+    #Kolmogorov–Smirnov-Test:
+    ksscore, ks_p_value = ss.ks_2samp(rankA,rankB)
+
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-            w_value_a,w_p_value_a,w_value_b,w_p_value_b)
+            w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value)
 
 #print results
 
@@ -212,7 +218,7 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
                       percentile25_b, percentile50_b, percentile75_b, percentile97_5_b, ci_lower_a,
                       ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
                       tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu,w_value_a,w_p_value_a,
-                      w_value_b,w_p_value_b):
+                      w_value_b,w_p_value_b,ksscore,ks_p_value):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -272,6 +278,11 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
+    print("Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t", round(ks_p_value,4))
+    print("ks score:\t\t\t\t\t\t\t", round(ksscore,4))
+
+    print("")
     print("***************Full analysis of raw data done***************")
     print("")
     print("")
@@ -283,7 +294,7 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                         ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                         pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                        w_value_a,w_p_value_a,w_value_b,w_p_value_b):
+                        w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -343,6 +354,11 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
+    print("Kolmogorov Smirnov Test:")
+    print("p-value:\t\t\t\t\t\t\t", round(ks_p_value, 4))
+    print("ks score:\t\t\t\t\t\t\t", round(ksscore, 4))
+
+    print("")
     print("***************Full analysis of rank data done***************")
     print("")
     print("")
@@ -352,14 +368,14 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b) = test_all(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                   percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                   ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                   pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                  w_value_a, w_p_value_a, w_value_b, w_p_value_b)
+                  w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
 
 
 
@@ -367,11 +383,11 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
- pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b) = test_all2(data_a, data_b, alpha)
+ pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                     percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                     ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                     pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
-                    w_value_a, w_p_value_a, w_value_b, w_p_value_b)
+                    w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value)
