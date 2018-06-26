@@ -20,8 +20,8 @@
       <file leaf-file-name="stat_tests.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lab3/stat_tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="232" column="4" lean-forward="false" selection-start-line="232" selection-start-column="4" selection-end-line="232" selection-end-column="4" />
+            <state relative-caret-position="290">
+              <caret line="348" column="55" lean-forward="false" selection-start-line="348" selection-start-column="55" selection-end-line="348" selection-end-column="55" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -508,7 +508,14 @@
       <option name="project" value="LOCAL" />
       <updated>1530008762839</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="cohens d">
+      <created>1530011491202</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1530011491202</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -546,7 +553,8 @@
     <MESSAGE value="man whitney u test" />
     <MESSAGE value="sharpio-wilk-test" />
     <MESSAGE value="Kolmogorov Smirnov Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kolmogorov Smirnov Test" />
+    <MESSAGE value="cohens d" />
+    <option name="LAST_COMMIT_MESSAGE" value="cohens d" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -701,14 +709,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../EiP/Uebung9/Aufgabe26.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16">
-          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../EiP/Uebung9/Aufgabe27.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -733,10 +733,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../EiP/Uebung9/Aufgabe26.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-16">
+          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lab3/stat_tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="232" column="4" lean-forward="false" selection-start-line="232" selection-start-column="4" selection-end-line="232" selection-end-column="4" />
+        <state relative-caret-position="290">
+          <caret line="348" column="55" lean-forward="false" selection-start-line="348" selection-start-column="55" selection-end-line="348" selection-end-column="55" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>

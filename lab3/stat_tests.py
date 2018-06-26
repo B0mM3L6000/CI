@@ -156,7 +156,13 @@ def test_all(a, b, alpha = 0.05):
     cohens_d = (mean_a - mean_b) / (sqrt((std_dev_a ** 2 + std_dev_b ** 2) / 2))
 
     #hedges g:
+    hedges_g = cohens_d*(1-(3/(4*(len(a)+len(b))-9)))
 
+    #glass's delta:
+    if len(a) > len(b):
+        glass_delta = (mean_b-mean_a)/(std_dev_a)
+    else:
+        glass_delta = (mean_a-mean_b)/(std_dev_b)
 
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
@@ -164,7 +170,7 @@ def test_all(a, b, alpha = 0.05):
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
             w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta)
 
 #Rankedbased Tests:
 
@@ -228,8 +234,14 @@ def test_all2(a, b, alpha = 0.05):
     #cohens d:
     cohens_d = (mean_a - mean_b) / (sqrt((std_dev_a ** 2 + std_dev_b ** 2) / 2))
 
-    # hedges g:
+    #hedges g:
+    hedges_g = cohens_d*(1-(3/(4*(len(rankA)+len(rankB))-9)))
 
+    #glass's delta:
+    if len(a) > len(b):
+        glass_delta = (mean_b-mean_a)/(std_dev_a)
+    else:
+        glass_delta = (mean_a-mean_b)/(std_dev_b)
 
 
 
@@ -238,7 +250,7 @@ def test_all2(a, b, alpha = 0.05):
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
             w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta)
 
 #print results
 
@@ -248,7 +260,7 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
                       ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
                       tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu,w_value_a,w_p_value_a,
                       w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-                      ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d):
+                      ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -329,6 +341,14 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
 
     print("")
+    print("Hedge's g:")
+    print("g measure:\t\t\t\t\t\t\t", round(hedges_g,4))
+
+    print("")
+    print("Glass's delta:")
+    print("delta:\t\t\t\t\t\t\t", round(glass_delta,4))
+
+    print("")
     print("***************Full analysis of raw data done***************")
     print("")
     print("")
@@ -341,7 +361,8 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                         pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                         w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,
-                        ksscore_a, ksscore_b, ks_p_value_a, ks_p_value_b,anderson_a,anderson_b,cohens_d):
+                        ksscore_a, ksscore_b, ks_p_value_a, ks_p_value_b,anderson_a,anderson_b,
+                        cohens_d,hedges_g, glass_delta):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -422,6 +443,14 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
 
     print("")
+    print("Hedge's g:")
+    print("g measure:\t\t\t\t\t\t\t", round(hedges_g,4))
+
+    print("")
+    print("Glass's delta:")
+    print("delta:\t\t\t\t\t\t\t", round(glass_delta,4))
+
+    print("")
     print("***************Full analysis of rank data done***************")
     print("")
     print("")
@@ -432,7 +461,7 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
  pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
- ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d) = test_all(data_a, data_b, alpha)
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
@@ -440,7 +469,8 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
                   ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                   pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                   w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
-                  ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
+                  ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g,
+                  glass_delta)
 
 
 
@@ -449,7 +479,7 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
  pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
- ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d) = test_all2(data_a, data_b, alpha)
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
@@ -457,4 +487,5 @@ print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a
                     ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
                     pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                     w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
-                    ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d)
+                    ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g,
+                    glass_delta)
