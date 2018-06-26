@@ -84,8 +84,14 @@ def ranks(a, b):
     return ranks_a, ranks_b
 
 ranksA, ranksB = ranks(data_a,data_b)
-
-print("*****************Ranks*****************")
+print("***************Ranks per datalist***************")
+print("a:", data_a_sorted)
+print("ranks a:", list(ss.rankdata(sorted(data_a))))
+print("")
+print("b:", data_b_sorted)
+print("ranks b:", list(ss.rankdata(sorted(data_b))))
+print("")
+print("*****************Ranks combined*****************")
 print("a:", data_a_sorted)
 print("ranks a:", ranksA)
 print("")
