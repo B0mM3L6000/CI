@@ -125,10 +125,17 @@ def test_all(a, b, alpha = 0.05):
     ci_lower_a, ci_upper_a = sms.DescrStatsW(a).tconfint_mean()
     ci_lower_b, ci_upper_b = sms.DescrStatsW(b).tconfint_mean()
 
+    #ts ci intervalle
+
+    #ttest norm same sigma:
+    tscore_norm_same, pvalue_norm_same = ss.ttest_ind(a,b)
+
+
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
-            percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b)
+            percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
+            tscore_norm_same,pvalue_norm_same)
 
 #Rankedbased Tests:
 
@@ -164,17 +171,23 @@ def test_all2(a, b, alpha = 0.05):
     ci_lower_a, ci_upper_a = sms.DescrStatsW(rankA).tconfint_mean()
     ci_lower_b, ci_upper_b = sms.DescrStatsW(rankB).tconfint_mean()
 
+    #ts ci intervalle
+
+    #ttest norm same sigma:
+    tscore_norm_same, pvalue_norm_same = ss.ttest_ind(rankA,rankB)
+
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
-             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b)
+            percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
+            tscore_norm_same,pvalue_norm_same)
 
 #print results
 
 def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                       percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                       percentile25_b, percentile50_b, percentile75_b, percentile97_5_b, ci_lower_a,
-                      ci_upper_a, ci_lower_b, ci_upper_b):
+                      ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -190,6 +203,8 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
+    #ts ci prints
+
 
     # Sequence B:
     print("")
@@ -204,7 +219,16 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t",round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
+    #ts ci prints
 
+    print("")
+    print("T-test und p-Value:")
+    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
+    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
+
+    print("")
+    print("***************Full analysis of raw data done***************")
+    print("")
     print("")
 
 
@@ -212,7 +236,8 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
 def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                         percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                         percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
-                        ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b):
+                        ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
+                        pvalue_norm_same):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -229,6 +254,7 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
+    #ts_ci print
 
     #Sequence B:
     print("")
@@ -243,28 +269,39 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
-
+    #ts ci print
 
     print("")
+    print("T-test und p-Value:")
+    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
+    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
 
+    print("")
+    print("***************Full analysis of rank data done***************")
+    print("")
+    print("")
 
 
 (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
- percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b) = test_all(data_a, data_b, alpha)
+ percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
+ tscore_norm_same,pvalue_norm_same) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                   percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
-                  ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b)
+                  ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
+                  pvalue_norm_same)
 
 
 
 (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
- percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b) = test_all2(data_a, data_b, alpha)
+ percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
+ tscore_norm_same,pvalue_norm_same) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                     percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
-                    ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b)
+                    ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
+                    pvalue_norm_same)
