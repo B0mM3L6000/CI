@@ -129,13 +129,18 @@ def test_all(a, b, alpha = 0.05):
 
     #ttest norm same sigma:
     tscore_norm_same, pvalue_norm_same = ss.ttest_ind(a,b)
+    tscore_norm_diff, pvalue_norm_diff = ss.ttest_ind(a, b,equal_var=False)
+
+    #manwhitneyu test
+    u_value, pvalue_mwu = ss.mannwhitneyu(a,b)
+    pvalue_mwu = pvalue_mwu*2
 
 
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
-            tscore_norm_same,pvalue_norm_same)
+            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
 
 #Rankedbased Tests:
 
@@ -175,19 +180,24 @@ def test_all2(a, b, alpha = 0.05):
 
     #ttest norm same sigma:
     tscore_norm_same, pvalue_norm_same = ss.ttest_ind(rankA,rankB)
+    tscore_norm_diff, pvalue_norm_diff = ss.ttest_ind(rankA, rankB, equal_var=False)
 
+    #manwhitneyu test
+    u_value, pvalue_mwu = ss.mannwhitneyu(rankA,rankB)
+    pvalue_mwu = pvalue_mwu*2
 
     return (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
             percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
-            tscore_norm_same,pvalue_norm_same)
+            tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
 
 #print results
 
 def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                       percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                       percentile25_b, percentile50_b, percentile75_b, percentile97_5_b, ci_lower_a,
-                      ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same):
+                      ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
+                      tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -223,8 +233,17 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
 
     print("")
     print("T-test und p-Value:")
+    print("asume same sigma:")
     print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
     print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
+    print("asume diffrent sigma:")
+    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_diff,4))
+    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_diff,4))
+
+    print("")
+    print("Manwhitney-U-Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(pvalue_mwu,4))
+    print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
     print("***************Full analysis of raw data done***************")
@@ -237,7 +256,7 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                         percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                         ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                        pvalue_norm_same):
+                        pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -273,8 +292,17 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
 
     print("")
     print("T-test und p-Value:")
+    print("asume same sigma:")
     print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
     print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
+    print("asume diffrent sigma:")
+    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_diff,4))
+    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_diff,4))
+
+    print("")
+    print("Manwhitney-U-Test:")
+    print("p-value:\t\t\t\t\t\t\t",round(pvalue_mwu,4))
+    print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
     print("***************Full analysis of rank data done***************")
@@ -285,23 +313,25 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
 (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
- tscore_norm_same,pvalue_norm_same) = test_all(data_a, data_b, alpha)
+ tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
+ pvalue_mwu) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                   percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                   ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                  pvalue_norm_same)
+                  pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
 
 
 
 (mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a, percentile50_a,
  percentile75_a, percentile97_5_a, percentile2_5_b, percentile25_b, percentile50_b,
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
- tscore_norm_same,pvalue_norm_same) = test_all2(data_a, data_b, alpha)
+ tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
+ pvalue_mwu) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
                     percentile25_b, percentile50_b, percentile75_b, percentile97_5_b,
                     ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,
-                    pvalue_norm_same)
+                    pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu)
