@@ -132,7 +132,19 @@ def test_all(a, b, alpha = 0.05):
     ci_lower_a, ci_upper_a = sms.DescrStatsW(a).tconfint_mean(alpha)
     ci_lower_b, ci_upper_b = sms.DescrStatsW(b).tconfint_mean(alpha)
 
-    #ts ci intervalle
+    #ts ci intervalls:
+    rankedA = list(ss.rankdata(sorted(a)))
+    rankedB = list(ss.rankdata(sorted(b)))
+    ci_lower_a_rank, ci_upper_a_rank = sms.DescrStatsW(rankedA).tconfint_mean(alpha)
+    ci_upper_a_rank = int(round(ci_upper_a_rank))
+    ci_lower_a_rank = int(round(ci_lower_a_rank))
+    ci_lower_a_rank_value = sorted(a)[ci_lower_a_rank-1]
+    ci_upper_a_rank_value = sorted(a)[ci_upper_a_rank-1]
+    ci_lower_b_rank, ci_upper_b_rank = sms.DescrStatsW(rankedB).tconfint_mean(alpha)
+    ci_upper_b_rank = int(round(ci_upper_b_rank))
+    ci_lower_b_rank = int(round(ci_lower_b_rank))
+    ci_lower_b_rank_value = sorted(b)[ci_lower_b_rank-1]
+    ci_upper_b_rank_value = sorted(b)[ci_upper_b_rank-1]
 
     #sharpio-wilk-test:
     w_value_a, w_p_value_a = ss.shapiro(a)
@@ -176,7 +188,9 @@ def test_all(a, b, alpha = 0.05):
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
             w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta)
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta,
+            ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+            ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value)
 
 #Rankedbased Tests:
 
@@ -212,7 +226,19 @@ def test_all2(a, b, alpha = 0.05):
     ci_lower_a, ci_upper_a = sms.DescrStatsW(rankA).tconfint_mean(alpha)
     ci_lower_b, ci_upper_b = sms.DescrStatsW(rankB).tconfint_mean(alpha)
 
-    #ts ci intervalle
+    #ts ci intervalls:
+    rankedA = list(ss.rankdata(sorted(rankA)))
+    rankedB = list(ss.rankdata(sorted(rankB)))
+    ci_lower_a_rank, ci_upper_a_rank = sms.DescrStatsW(rankedA).tconfint_mean(alpha)
+    ci_upper_a_rank = int(round(ci_upper_a_rank))
+    ci_lower_a_rank = int(round(ci_lower_a_rank))
+    ci_lower_a_rank_value = sorted(rankA)[ci_lower_a_rank-1]
+    ci_upper_a_rank_value = sorted(rankA)[ci_upper_a_rank-1]
+    ci_lower_b_rank, ci_upper_b_rank = sms.DescrStatsW(rankedB).tconfint_mean(alpha)
+    ci_upper_b_rank = int(round(ci_upper_b_rank))
+    ci_lower_b_rank = int(round(ci_lower_b_rank))
+    ci_lower_b_rank_value = sorted(rankB)[ci_lower_b_rank-1]
+    ci_upper_b_rank_value = sorted(rankB)[ci_upper_b_rank-1]
 
     #sharpio-wilk-test:
     w_value_a, w_p_value_a = ss.shapiro(rankA)
@@ -256,7 +282,9 @@ def test_all2(a, b, alpha = 0.05):
             percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
             tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
             w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta)
+            ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta,
+            ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+            ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value)
 
 #print results
 
@@ -266,7 +294,9 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
                       ci_upper_a, ci_lower_b, ci_upper_b, tscore_norm_same,pvalue_norm_same,
                       tscore_norm_diff, pvalue_norm_diff, u_value,pvalue_mwu,w_value_a,w_p_value_a,
                       w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,ksscore_b,
-                      ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta):
+                      ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta,
+                      ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+                      ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value):
     print("*****************Full analysis of raw data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
     # Sequence A:
@@ -282,7 +312,10 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
-    #ts ci prints
+    print("CI Thompson Savur Lower Rank:\t", ci_lower_a_rank)
+    print("CI Thompson Savur Lower Value:\t", round(ci_lower_a_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t", ci_upper_a_rank)
+    print("CI Thompson Savur Upper Value:\t", round(ci_upper_a_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
@@ -308,7 +341,10 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t",round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
-    #ts ci prints
+    print("CI Thompson Savur Lower Rank:\t", ci_lower_b_rank)
+    print("CI Thompson Savur Lower Value:\t", round(ci_lower_b_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t", ci_upper_b_rank)
+    print("CI Thompson Savur Upper Value:\t", round(ci_upper_b_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
@@ -368,7 +404,9 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
                         pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                         w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,
                         ksscore_a, ksscore_b, ks_p_value_a, ks_p_value_b,anderson_a,anderson_b,
-                        cohens_d,hedges_g, glass_delta):
+                        cohens_d,hedges_g, glass_delta,ci_lower_a_rank, ci_upper_a_rank,
+                        ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+                        ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value):
     print("*****************Full analysis of rank data*****************")
     print("Alpha:\t\t\t\t\t\t\t", alpha)
 
@@ -385,7 +423,10 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
-    #ts_ci print
+    print("CI Thompson Savur Lower Rank:\t", ci_lower_a_rank)
+    print("CI Thompson Savur Lower Value:\t", round(ci_lower_a_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t", ci_upper_a_rank)
+    print("CI Thompson Savur Upper Value:\t", round(ci_upper_a_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
@@ -410,7 +451,10 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
-    #ts ci print
+    print("CI Thompson Savur Lower Rank:\t", ci_lower_b_rank)
+    print("CI Thompson Savur Lower Value:\t", round(ci_lower_b_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t", ci_upper_b_rank)
+    print("CI Thompson Savur Upper Value:\t", round(ci_upper_b_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
@@ -467,7 +511,9 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
  pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
- ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta) = test_all(data_a, data_b, alpha)
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta,
+ ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+ ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value) = test_all(data_a, data_b, alpha)
 
 print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                   percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
@@ -476,7 +522,8 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
                   pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                   w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
                   ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g,
-                  glass_delta)
+                  glass_delta, ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank,
+                  ci_lower_a_rank_value,ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value)
 
 
 
@@ -485,7 +532,9 @@ print_results_raw(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, 
  percentile75_b, percentile97_5_b, ci_lower_a, ci_upper_a, ci_lower_b, ci_upper_b,
  tscore_norm_same,pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,
  pvalue_mwu,w_value_a,w_p_value_a,w_value_b,w_p_value_b,ksscore,ks_p_value,ksscore_a,
- ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta) = test_all2(data_a, data_b, alpha)
+ ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g, glass_delta,
+ ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank, ci_lower_a_rank_value,
+ ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value) = test_all2(data_a, data_b, alpha)
 
 print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a, percentile25_a,
                     percentile50_a, percentile75_a, percentile97_5_a, percentile2_5_b,
@@ -494,4 +543,5 @@ print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2_5_a
                     pvalue_norm_same,tscore_norm_diff,pvalue_norm_diff, u_value,pvalue_mwu,
                     w_value_a, w_p_value_a, w_value_b, w_p_value_b,ksscore,ks_p_value,ksscore_a,
                     ksscore_b,ks_p_value_a,ks_p_value_b,anderson_a,anderson_b,cohens_d,hedges_g,
-                    glass_delta)
+                    glass_delta,ci_lower_a_rank, ci_upper_a_rank, ci_lower_b_rank, ci_upper_b_rank,
+                    ci_lower_a_rank_value,ci_upper_a_rank_value, ci_lower_b_rank_value, ci_upper_b_rank_value)
