@@ -15,23 +15,29 @@ def getdata(path):
     data.close()
     return datalist
 
-#inputs für data (auskommentiert bei tests vorerst):
-"""
-path_a = input("Dateiname A? (Beispiel: data_A.txt)")
-path_b = input("Dateiname B? (Beispiel: data_B.txt)")
-"""
+#inputs für data
+
+path_a = input("Data A? (Example: data_A.txt): ")
+path_b = input("Data B? (Example: data_B.txt): ")
+
 #hardcoded für tests zum zeitsparen
-path_a = "data_A.txt"
-path_b = "data_B.txt"
+#path_a = "data_A.txt"
+#path_b = "data_B.txt"
 
 data_a = getdata(path_a)
 data_b = getdata(path_b)
 
 #data_a = [0.03,0.91,0.64,0.99,0.64,0.16,0.16,0.91,0.16,0.27]
 #data_b = [0.64,0.08,0.16,0.27,0.02,0.01,0.16,0.03,0.03,0.64]
+#alpha = 0.05
+check = False
+while check == False:
+    alpha = float(input("Which Alpha? (Value between 0 and 1): "))
+    if alpha >0 and alpha < 1:
+        check = True
+    else:
+        print("Alpha out of bounds. Please try again.")
 
-#alpha = float(input("Welches Alpha?"))
-alpha = 0.05
 
 #print(path_a)
 #print(path_b)
@@ -312,20 +318,20 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
-    print("CI Thompson Savur Lower Rank:\t", ci_lower_a_rank)
-    print("CI Thompson Savur Lower Value:\t", round(ci_lower_a_rank_value,4))
-    print("CI Thompson Savur Upper Rank:\t", ci_upper_a_rank)
-    print("CI Thompson Savur Upper Value:\t", round(ci_upper_a_rank_value,4))
+    print("CI Thompson Savur Lower Rank:\t\t\t\t", ci_lower_a_rank)
+    print("CI Thompson Savur Lower Value:\t\t\t\t", round(ci_lower_a_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t\t\t\t", ci_upper_a_rank)
+    print("CI Thompson Savur Upper Value:\t\t\t\t", round(ci_upper_a_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
-    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
-    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
+    print("p-value:\t\t\t\t\t\t", round(w_p_value_a,4))
+    print("W:\t\t\t\t\t\t\t", round(w_value_a,4))
     print("#Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_a,4))
-    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_a,4))
+    print("p-value:\t\t\t\t\t\t",round(ks_p_value_a,4))
+    print("ksscore:\t\t\t\t\t\t",round(ksscore_a,4))
     print("#Anderson–Darling-Test:")
-    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_a,4))
+    print("A:\t\t\t\t\t\t\t", round(anderson_a,4))
 
 
     # Sequence B:
@@ -341,20 +347,20 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("97.5th Percentile 97,5%:\t\t\t\t",round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
-    print("CI Thompson Savur Lower Rank:\t", ci_lower_b_rank)
-    print("CI Thompson Savur Lower Value:\t", round(ci_lower_b_rank_value,4))
-    print("CI Thompson Savur Upper Rank:\t", ci_upper_b_rank)
-    print("CI Thompson Savur Upper Value:\t", round(ci_upper_b_rank_value,4))
+    print("CI Thompson Savur Lower Rank:\t\t\t\t", ci_lower_b_rank)
+    print("CI Thompson Savur Lower Value:\t\t\t\t", round(ci_lower_b_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t\t\t\t", ci_upper_b_rank)
+    print("CI Thompson Savur Upper Value:\t\t\t\t", round(ci_upper_b_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
-    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
-    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+    print("p-value:\t\t\t\t\t\t", round(w_p_value_b,4))
+    print("W:\t\t\t\t\t\t\t", round(w_value_b,4))
     print("#Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_b,4))
-    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_b,4))
+    print("p-value:\t\t\t\t\t\t",round(ks_p_value_b,4))
+    print("ksscore:\t\t\t\t\t\t",round(ksscore_b,4))
     print("#Anderson–Darling-Test:")
-    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_b,4))
+    print("A:\t\t\t\t\t\t\t", round(anderson_b,4))
 
     print("")
     print("***Interset Tests")
@@ -362,29 +368,29 @@ def print_results_raw(alpha,mean_a,mean_b,std_dev_a, std_dev_b, percentile2_5_a,
     print("")
     print("T-test und p-Value:")
     print("asume same sigma:")
-    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
-    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
+    print("t-score:\t\t\t\t\t\t", round(tscore_norm_same,4))
+    print("p-value:\t\t\t\t\t\t", round(pvalue_norm_same,4))
     print("asume diffrent sigma:")
-    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_diff,4))
-    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_diff,4))
+    print("t-score:\t\t\t\t\t\t", round(tscore_norm_diff,4))
+    print("p-value:\t\t\t\t\t\t", round(pvalue_norm_diff,4))
 
     print("")
     print("Manwhitney-U-Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(pvalue_mwu,4))
-    print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
+    print("p-value:\t\t\t\t\t\t",round(pvalue_mwu,4))
+    print("U:\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
     print("Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t", round(ks_p_value,4))
-    print("ks score:\t\t\t\t\t\t\t", round(ksscore,4))
+    print("p-value:\t\t\t\t\t\t", round(ks_p_value,4))
+    print("ks score:\t\t\t\t\t\t", round(ksscore,4))
 
     print("")
     print("Cohens-D:")
-    print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
+    print("d measure:\t\t\t\t\t\t", round(cohens_d,4))
 
     print("")
     print("Hedge's g:")
-    print("g measure:\t\t\t\t\t\t\t", round(hedges_g,4))
+    print("g measure:\t\t\t\t\t\t", round(hedges_g,4))
 
     print("")
     print("Glass's delta:")
@@ -423,20 +429,20 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_a,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_a,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_a,4))
-    print("CI Thompson Savur Lower Rank:\t", ci_lower_a_rank)
-    print("CI Thompson Savur Lower Value:\t", round(ci_lower_a_rank_value,4))
-    print("CI Thompson Savur Upper Rank:\t", ci_upper_a_rank)
-    print("CI Thompson Savur Upper Value:\t", round(ci_upper_a_rank_value,4))
+    print("CI Thompson Savur Lower Rank:\t\t\t\t", ci_lower_a_rank)
+    print("CI Thompson Savur Lower Value:\t\t\t\t", round(ci_lower_a_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t\t\t\t", ci_upper_a_rank)
+    print("CI Thompson Savur Upper Value:\t\t\t\t", round(ci_upper_a_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
-    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_a,4))
-    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_a,4))
+    print("p-value:\t\t\t\t\t\t", round(w_p_value_a,4))
+    print("W:\t\t\t\t\t\t\t", round(w_value_a,4))
     print("#Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_a,4))
-    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_a,4))
+    print("p-value:\t\t\t\t\t\t",round(ks_p_value_a,4))
+    print("ksscore:\t\t\t\t\t\t",round(ksscore_a,4))
     print("#Anderson–Darling-Test:")
-    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_a,4))
+    print("A:\t\t\t\t\t\t\t", round(anderson_a,4))
 
     #Sequence B:
     print("")
@@ -451,20 +457,20 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("97.5th Percentile 97,5%:\t\t\t\t", round(percentile97_5_b,4))
     print("CI Lower:\t\t\t\t\t\t", round(ci_lower_b,4))
     print("CI Upper:\t\t\t\t\t\t", round(ci_upper_b,4))
-    print("CI Thompson Savur Lower Rank:\t", ci_lower_b_rank)
-    print("CI Thompson Savur Lower Value:\t", round(ci_lower_b_rank_value,4))
-    print("CI Thompson Savur Upper Rank:\t", ci_upper_b_rank)
-    print("CI Thompson Savur Upper Value:\t", round(ci_upper_b_rank_value,4))
+    print("CI Thompson Savur Lower Rank:\t\t\t\t", ci_lower_b_rank)
+    print("CI Thompson Savur Lower Value:\t\t\t\t", round(ci_lower_b_rank_value,4))
+    print("CI Thompson Savur Upper Rank:\t\t\t\t", ci_upper_b_rank)
+    print("CI Thompson Savur Upper Value:\t\t\t\t", round(ci_upper_b_rank_value,4))
     print("")
     print("###Normality Tests:")
     print("#sharpio-wilk-test:")
-    print("p-value:\t\t\t\t\t\t\t", round(w_p_value_b,4))
-    print("W:\t\t\t\t\t\t\t\t\t", round(w_value_b,4))
+    print("p-value:\t\t\t\t\t\t", round(w_p_value_b,4))
+    print("W:\t\t\t\t\t\t\t", round(w_value_b,4))
     print("#Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(ks_p_value_b,4))
-    print("ksscore:\t\t\t\t\t\t\t",round(ksscore_b,4))
+    print("p-value:\t\t\t\t\t\t",round(ks_p_value_b,4))
+    print("ksscore:\t\t\t\t\t\t",round(ksscore_b,4))
     print("#Anderson–Darling-Test:")
-    print("A:\t\t\t\t\t\t\t\t\t", round(anderson_b,4))
+    print("A:\t\t\t\t\t\t\t", round(anderson_b,4))
 
     print("")
     print("***Interset Tests")
@@ -472,29 +478,29 @@ def print_results_ranks(alpha, mean_a, mean_b, std_dev_a, std_dev_b, percentile2
     print("")
     print("T-test und p-Value:")
     print("asume same sigma:")
-    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_same,4))
-    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_same,4))
+    print("t-score:\t\t\t\t\t\t", round(tscore_norm_same,4))
+    print("p-value:\t\t\t\t\t\t", round(pvalue_norm_same,4))
     print("asume diffrent sigma:")
-    print("t-score:\t\t\t\t\t\t\t", round(tscore_norm_diff,4))
-    print("p-value:\t\t\t\t\t\t\t", round(pvalue_norm_diff,4))
+    print("t-score:\t\t\t\t\t\t", round(tscore_norm_diff,4))
+    print("p-value:\t\t\t\t\t\t", round(pvalue_norm_diff,4))
 
     print("")
     print("Manwhitney-U-Test:")
-    print("p-value:\t\t\t\t\t\t\t",round(pvalue_mwu,4))
-    print("U:\t\t\t\t\t\t\t\t\t",round(u_value,4))
+    print("p-value:\t\t\t\t\t\t",round(pvalue_mwu,4))
+    print("U:\t\t\t\t\t\t\t",round(u_value,4))
 
     print("")
     print("Kolmogorov Smirnov Test:")
-    print("p-value:\t\t\t\t\t\t\t", round(ks_p_value, 4))
-    print("ks score:\t\t\t\t\t\t\t", round(ksscore, 4))
+    print("p-value:\t\t\t\t\t\t", round(ks_p_value, 4))
+    print("ks score:\t\t\t\t\t\t", round(ksscore, 4))
 
     print("")
     print("Cohens-D:")
-    print("d measure:\t\t\t\t\t\t\t", round(cohens_d,4))
+    print("d measure:\t\t\t\t\t\t", round(cohens_d,4))
 
     print("")
     print("Hedge's g:")
-    print("g measure:\t\t\t\t\t\t\t", round(hedges_g,4))
+    print("g measure:\t\t\t\t\t\t", round(hedges_g,4))
 
     print("")
     print("Glass's delta:")
